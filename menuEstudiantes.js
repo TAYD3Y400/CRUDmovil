@@ -11,8 +11,8 @@ function MenuEstudiantes({ navigation }) {
             onPress={() => navigation.navigate('crearEstudiante')}
           />
           <Button
-            title="Ver estudiante"
-            //onPress={() => /* Navegar a la pantalla de ver estudiante */}
+            title="Gestionar estudiantes"
+            onPress={() => navigation.navigate('mostrarEstudiantes')}
           />
           <Button
             title="Actualizar estudiante"

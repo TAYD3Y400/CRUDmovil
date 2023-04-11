@@ -1,12 +1,17 @@
 import React from 'react';
-import { Button, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { Button, StyleSheet, Text, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import * as SQLite from 'expo-sqlite'
+import { useState, useEffect } from 'react';
+//---------------------------------------------------------------
 import MenuEstudiantes from './menuEstudiantes.js';
 import MenuCursos from './menuCursos.js';
 import MenuMatriculas from './menuMatriculas.js';
 import crearEstudiante from './crearEstudiante.js';
+import mostrarEstudiantes from './mostrarEstudiantes.js';
+import editarEstudiante from './editarEstudiante.js';
 
 function HomeScreen({ navigation }) {
   return (
@@ -40,6 +45,8 @@ function App() {
         <Stack.Screen name="MenuCursos" component={MenuCursos} />
         <Stack.Screen name="MenuMatriculas" component={MenuMatriculas} />
         <Stack.Screen name="crearEstudiante" component={crearEstudiante} />
+        <Stack.Screen name="mostrarEstudiantes" component={mostrarEstudiantes} />
+        <Stack.Screen name="editarEstudiante" component={editarEstudiante} />
       </Stack.Navigator>
     </NavigationContainer>
   );
