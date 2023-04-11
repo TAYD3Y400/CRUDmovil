@@ -7,18 +7,18 @@ function crearEstudiante() {
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
   const [age, setAge] = useState('');
+  const [mensaje, setMensaje] = useState('');
 
   const handleSubmit = () => {
-    console.log(id, name, lastname, age);
     db.transaction(tx => {
       tx.executeSql(
         'INSERT INTO estudiante (id, nombre, apellido,  edad) VALUES (?, ?, ?, ?);',
-        [id,name, lastname, age],
+        [id, name, lastname, age],
         (_, result) => {
-          console.log('El estudiante fue agregado con éxito');
+          setMensaje('El estudiante fue agregado con éxito');
         },
         (_, error) => {
-          console.log(`Error al agregar el estudiante: ${error.message}`);
+          setMensaje(`Error al agregar el estudiante: ${error.message}`);
         }
       );
     });
@@ -42,6 +42,7 @@ function crearEstudiante() {
       <View style={{ marginVertical: 10 }}>
         <Button title="Agregar" onPress={handleSubmit} />
       </View>
+      {mensaje !== '' && <Text style={{ color: mensaje.includes('Error') ? 'red' : 'green', marginTop: 10 }}>{mensaje}</Text>}
     </View>
   );
 }

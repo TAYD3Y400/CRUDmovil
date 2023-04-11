@@ -14,14 +14,6 @@ function MenuEstudiantes({ navigation }) {
             title="Gestionar estudiantes"
             onPress={() => navigation.navigate('mostrarEstudiantes')}
           />
-          <Button
-            title="Actualizar estudiante"
-            //onPress={() => /* Navegar a la pantalla de actualizar estudiante */}
-          />
-          <Button
-            title="Eliminar estudiante"
-            //onPress={() => /* Navegar a la pantalla de eliminar estudiante */}
-          />
         </View>
       </View>
     );

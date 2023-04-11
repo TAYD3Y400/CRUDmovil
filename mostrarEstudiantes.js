@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import db from './database.js'; 
+import db from './database.js';
+import { useNavigation } from '@react-navigation/native'; 
 
 function mostrarEstudiantes() {
     const [estudiantes, setEstudiantes] = useState([]);
+    const navigation = useNavigation();
     
     const handleEliminar = (id) => {
-      console.log(id)
+      db.transaction((tx) => {
+        tx.executeSql(
+          'DELETE FROM estudiante WHERE id = ?',
+          [id],
+          (_, result) => {
+            console.log(`Estudiante con id ${id} eliminado`);
+            // Actualizar la lista de estudiantes
+            const nuevosEstudiantes = estudiantes.filter(
+              (estudiante) => estudiante.id !== id
+            );
+            setEstudiantes(nuevosEstudiantes);
+          },
+          (_, error) => {
+            console.log(`Error al eliminar estudiante con id ${id}: ${error}`);
+          }
+        );
+      });
     }
   
     db.transaction((tx) => {
@@ -40,7 +58,8 @@ function mostrarEstudiantes() {
                 <TouchableOpacity onPress={() => handleEliminar(estudiante.id)}>
                   <Text style={styles.botonEliminar}>Eliminar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('editarEstudiante')}>
+                <TouchableOpacity onPress={() => navigation.navigate('editarEstudiante', 
+                { id: estudiante.id, nombre: estudiante.nombre, apellido: estudiante.apellido, edad: estudiante.edad })}>
                   <Text style={styles.boton}>Editar</Text>
                 </TouchableOpacity>
               </View>
