@@ -12,6 +12,9 @@ import MenuMatriculas from './menuMatriculas.js';
 import crearEstudiante from './crearEstudiante.js';
 import mostrarEstudiantes from './mostrarEstudiantes.js';
 import editarEstudiante from './editarEstudiante.js';
+import crearCurso from './crearCurso.js';
+import editarCurso from './editarCurso.js';
+import mostrarCursos from './mostrarCursos.js';
 
 function HomeScreen({ navigation }) {
   return (
@@ -47,6 +50,9 @@ function App() {
         <Stack.Screen name="crearEstudiante" component={crearEstudiante} />
         <Stack.Screen name="mostrarEstudiantes" component={mostrarEstudiantes} />
         <Stack.Screen name="editarEstudiante" component={editarEstudiante} />
+        <Stack.Screen name="crearCurso" component={crearCurso} />
+        <Stack.Screen name="mostrarCursos" component={mostrarCursos} />
+        <Stack.Screen name="editarCurso" component={editarCurso} />
       </Stack.Navigator>
     </NavigationContainer>
   );

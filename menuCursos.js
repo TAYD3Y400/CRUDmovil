@@ -8,19 +8,11 @@ function MenuCursos({ navigation }) {
         <View style={{ marginVertical: 5}}>
           <Button
             title="Crear Curso"
-            //onPress={() => /* Navegar a la pantalla de crear estudiante */}
-          /> 
-          <Button
-            title="Ver Curso"
-            //onPress={() => /* Navegar a la pantalla de ver estudiante */}
+            onPress={() => navigation.navigate('crearCurso')}
           />
           <Button
-            title="Actualizar Curso"
-            //onPress={() => /* Navegar a la pantalla de actualizar estudiante */}
-          />
-          <Button
-            title="Eliminar Curso"
-            //onPress={() => /* Navegar a la pantalla de eliminar estudiante */}
+            title="Gestionar Cursos"
+            onPress={() => navigation.navigate('mostrarCursos')}
           />
         </View>
       </View>
