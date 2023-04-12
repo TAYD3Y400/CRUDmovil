@@ -4,46 +4,53 @@ import db from './database.js';
 import { useNavigation } from '@react-navigation/native'; 
 
 function mostrarEstudiantes() {
-    const [estudiantes, setEstudiantes] = useState([]);
+    const [matriculas, setMatriculas] = useState([]);
     const navigation = useNavigation();
     
-    //Se activa para eliminar un curso desde el boton eliminar
+    //Se activa para eliminar unA matricula desde el boton eliminar
     const handleEliminar = (id) => {
       db.transaction((tx) => {
         tx.executeSql(
-          'DELETE FROM estudiante WHERE id = ?',  //elimina el estudiante segun el id que se le haya pasado
+          'DELETE FROM estudiante_x_curso WHERE id = ?',  //elimina el estudiante segun el id que se le haya pasado
           [id],
           (_, result) => {
-            console.log(`Estudiante con id ${id} eliminado`);
-            const nuevosEstudiantes = estudiantes.filter(  // Actualizar la lista de estudiantes
-              (estudiante) => estudiante.id !== id
+            console.log(`Matricula con id ${id} eliminada`);
+            // Actualizar la lista de cursos
+            const nuevasMatriculas = matriculas.filter(
+              (matricula) => matricula.id !== id
             );
-            setEstudiantes(nuevosEstudiantes);
+            setMatriculas(nuevasMatriculas);
           },
           (_, error) => {
-            console.log(`Error al eliminar estudiante con id ${id}: ${error}`);
+            console.log(`Error al eliminar matricula con id ${id}: ${error}`);
           }
         );
       });
     }
     
-    //Select que trae todos los datos de la base de datos
+    //Select que trae todos los datos de la tabla estudiante_x_curso y además hace los inner join correspondientes para los datos de otras tablas
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT id, nombre, apellido, edad FROM estudiante',
+        "SELECT estudiante_x_curso.id as id, curso.id as codigo_curso, estudiante.id as cedula, estudiante.nombre as nombre_estudiante, estudiante.apellido as apellido_estudiante, curso.nombre as nombre_curso, curso.grupo as grupo_curso " +
+        "FROM estudiante_x_curso " +
+        "INNER JOIN estudiante ON estudiante.id = estudiante_x_curso.id_estudiante " +
+        "INNER JOIN curso ON curso.id = estudiante_x_curso.id_curso",
         [],
         (_, { rows }) => {
-          const estudiantesArray = [];
+          const matriculaArray = [];
           for (let i = 0; i < rows.length; i++) {
-            const estudiante = rows.item(i);
-            estudiantesArray.push({
-              id: estudiante.id,
-              nombre: estudiante.nombre,
-              apellido: estudiante.apellido,
-              edad: estudiante.edad,
+            const matricula = rows.item(i);
+            matriculaArray.push({
+              id: matricula.id,
+              cedula: matricula.cedula,
+              nombre: matricula.nombre_estudiante,
+              apellido: matricula.apellido_estudiante,
+              codigo: matricula.codigo_curso,
+              curso: matricula.nombre_curso,
+              grupo: matricula.grupo_curso,
             });
           }
-          setEstudiantes(estudiantesArray);
+          setMatriculas(matriculaArray);
         }
       );
     });
@@ -51,18 +58,14 @@ function mostrarEstudiantes() {
     //render
     return (
       <View style={styles.container}>
-        <Text style={styles.titulo}>Lista de Estudiantes</Text>
+        <Text style={styles.titulo}>Lista de Matriculas</Text>
         <View style={styles.datosContainer}>
-          {estudiantes.map((estudiante) => (
-            <View key={estudiante.id} style={styles.estudiante}>
-              <Text style={styles.info}>{estudiante.id}{'\t\t\t'}{estudiante.nombre}{'\t\t\t'}{estudiante.apellido}{'\t\t\t'}{estudiante.edad}</Text>
+          {matriculas.map((matricula) => (
+            <View key={matricula.cedula} style={styles.matriculas}>
+              <Text style={styles.info}>{matricula.cedula}{'\t\t\t'}{matricula.nombre}{'\t\t\t'}{matricula.apellido}{'\t\t\t'}{matricula.curso}{'\t\t\t'}{matricula.grupo}</Text>
               <View style={styles.botonesContainer}>
-                <TouchableOpacity onPress={() => handleEliminar(estudiante.id)}>
+                <TouchableOpacity onPress={() => handleEliminar(matricula.id)}>
                   <Text style={styles.botonEliminar}>Eliminar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('editarEstudiante', 
-                { id: estudiante.id, nombre: estudiante.nombre, apellido: estudiante.apellido, edad: estudiante.edad })}>
-                  <Text style={styles.boton}>Editar</Text>
                 </TouchableOpacity>
               </View>
             </View>

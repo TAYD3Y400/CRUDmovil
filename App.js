@@ -15,7 +15,11 @@ import editarEstudiante from './editarEstudiante.js';
 import crearCurso from './crearCurso.js';
 import editarCurso from './editarCurso.js';
 import mostrarCursos from './mostrarCursos.js';
+import crearMatricula from './crearMatricula.js';
+import mostrarMatricula from './mostrarMatricula.js';
 
+
+//Ventana principal que redirige a las demas subventanas
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -37,8 +41,10 @@ function HomeScreen({ navigation }) {
   );
 }
 
+//Navegador para poder moverse entre las distintas paginas
 const Stack = createStackNavigator();
 
+//Navegador que contiene todas las ventanas
 function App() {
   return (
     <NavigationContainer>
@@ -53,6 +59,8 @@ function App() {
         <Stack.Screen name="crearCurso" component={crearCurso} />
         <Stack.Screen name="mostrarCursos" component={mostrarCursos} />
         <Stack.Screen name="editarCurso" component={editarCurso} />
+        <Stack.Screen name="crearMatricula" component={crearMatricula} />
+        <Stack.Screen name="mostrarMatricula" component={mostrarMatricula} />
       </Stack.Navigator>
     </NavigationContainer>
   );

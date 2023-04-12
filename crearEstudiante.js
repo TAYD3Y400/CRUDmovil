@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import db from './database.js'; 
 
+
+//Form para registar un estudiante
 function crearEstudiante() {
   const [id, setID] = useState('');
   const [name, setName] = useState('');
@@ -9,21 +11,24 @@ function crearEstudiante() {
   const [age, setAge] = useState('');
   const [mensaje, setMensaje] = useState('');
 
+  //Se activa para hacer le ingreso de 
   const handleSubmit = () => {
+    //Sentencia sql para ingresar los datos
     db.transaction(tx => {
       tx.executeSql(
         'INSERT INTO estudiante (id, nombre, apellido,  edad) VALUES (?, ?, ?, ?);',
         [id, name, lastname, age],
         (_, result) => {
-          setMensaje('El estudiante fue agregado con éxito');
+          setMensaje('El estudiante fue agregado con éxito'); //exito
         },
         (_, error) => {
-          setMensaje(`Error al agregar el estudiante: ${error.message}`);
+          setMensaje(`Error al agregar el estudiante: ${error.message}`); //error
         }
       );
     });
   };
 
+  //render
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Agregar Estudiante</Text>

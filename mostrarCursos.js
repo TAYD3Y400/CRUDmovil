@@ -3,10 +3,14 @@ import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'rea
 import db from './database.js';
 import { useNavigation } from '@react-navigation/native'; 
 
+
+//Ventana para mostrar y gestionar los cursos ya creados
 function mostrarCursos() {
     const [cursos, setCursos] = useState([]);
     const navigation = useNavigation();
     
+
+    //Se activa para eliminar un curso desde el boton eliminar
     const handleEliminar = (id) => {
       db.transaction((tx) => {
         tx.executeSql(
@@ -26,7 +30,8 @@ function mostrarCursos() {
         );
       });
     }
-  
+    
+    //Select que trae todos los datos de la base de datos
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT id, nombre, grupo FROM curso',
@@ -39,13 +44,14 @@ function mostrarCursos() {
               id: curso.id,
               nombre: curso.nombre,
               grupo: "0"+curso.grupo,
-            });
+            }); //almacena los cursos que va leyendo
           }
           setCursos(cursosArray);
         }
       );
     });
-  
+    
+    //render
     return (
       <View style={styles.container}>
         <Text style={styles.titulo}>Lista de Cursos</Text>
@@ -55,7 +61,7 @@ function mostrarCursos() {
               <Text style={styles.info}>{curso.id}{'\t\t\t'}{curso.nombre}{'\t\t\t'}{curso.grupo}</Text>
               <View style={styles.botonesContainer}>
                 <TouchableOpacity onPress={() => handleEliminar(curso.id)}>
-                  <Text style={styles.botonEliminar}>Eliminar</Text>
+                  <Text style={styles.botonEliminar}>Eliminar</Text> 
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('editarCurso', 
                 { id: curso.id, nombre: curso.nombre, grupo: curso.grupo })}>
@@ -69,6 +75,7 @@ function mostrarCursos() {
     );
   }
   
+  //Style de la ventana
   const styles = StyleSheet.create({
     container: {
       flex: 1,

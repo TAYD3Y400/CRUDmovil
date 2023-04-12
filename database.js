@@ -1,6 +1,13 @@
 import * as SQLite from 'expo-sqlite';
 
+//se abré la conexión con la base de datos
 const db = SQLite.openDatabase('sistemaMatricula.db');
+
+/*db.transaction(tx => {
+  tx.executeSql(
+    'DROP TABLE IF EXISTS estudiante_x_curso;'
+  );
+});*/
 
 // Crea la tabla "estudiante"
 db.transaction(tx => {
@@ -19,7 +26,7 @@ db.transaction(tx => {
 // Crea la tabla "estudiante_x_curso"
 db.transaction(tx => {
   tx.executeSql(
-    'CREATE TABLE IF NOT EXISTS estudiante_x_curso (id_estudiante INTEGER NOT NULL, id_curso TEXT NOT NULL, FOREIGN KEY (id_estudiante) REFERENCES estudiantes (id), FOREIGN KEY (id_curso) REFERENCES curso (id));'
+    'CREATE TABLE IF NOT EXISTS estudiante_x_curso (id TEXT PRIMARY KEY, id_estudiante INTEGER NOT NULL, id_curso TEXT NOT NULL, FOREIGN KEY (id_estudiante) REFERENCES estudiantes (id), FOREIGN KEY (id_curso) REFERENCES curso (id));'
   );
 });
 
